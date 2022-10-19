@@ -13,4 +13,4 @@ output:
 
 I am interested in exploring data related to mass incarceration in the United States. 
 I could look at data collected from prisons to figure out why people get incarcerated or who gets incarcerated.
-I am also interested in looking at data that relates to sex trafficking. 
+I am also interested in looking at data that relates to sex trafficking.
