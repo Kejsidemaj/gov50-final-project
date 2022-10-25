@@ -1521,6 +1521,19 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>I am interested in exploring data related to mass incarceration in the United States.
 I could look at data collected from prisons to figure out why people get incarcerated or who gets incarcerated.
 I am also interested in looking at data that relates to sex trafficking.</p>
+<h2 id="milestone-2">Milestone #2</h2>
+<p>The data I will be using is “What the World Thinks of Trump” data that looks at the approval ratings across countries for five of President Trump’s proposed policies. The two polices I want to compare are Trump’s policies on major trade agreements and the Muslim ban. Do countries have different approval rating for Trump policies that relate to Islam as compared to trade agreements? I hypothesize that countries’ approval rate of Trump will be higher for policies that relate to trade rather then polices that relate to the Islam ban. The reasoning for this is that there is a lot of false and negative narratives surrounding Islam that might make more countries react positively towards Trump in this regard. This is in no way to say that radicalism is intertwined with Islam, but that there may be misconceptions about this worldwide that lead to such results. My explanatory variables are the net_approvals for both the trade issue and Muslim ban issue. The observation pattern that would support my hypothesis would be if Trump’s approval rating was higher for the trade agreement then for the Muslim ban. My hypothesis would be considered false if the Muslim ban policy has the lowest approval rating.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>##library(readr)</span></span>
+<span><span class='co'>##library(tidyverse)</span></span>
+<span><span class='co'>##TRUMPWORLD_issue_4 &lt;- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-4.csv")</span></span>
+<span><span class='co'>##View(TRUMPWORLD_issue_4)</span></span>
+<span></span>
+<span><span class='co'>##TRUMPWORLD_issue_5 &lt;- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-5.csv")</span></span>
+<span><span class='co'>##View(TRUMPWORLD_issue_5)</span></span></code></pre>
+</div>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
