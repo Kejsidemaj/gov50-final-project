@@ -20,13 +20,29 @@ I am also interested in looking at data that relates to sex trafficking.
 The data I will be using is "What the World Thinks of Trump" data that looks at the approval ratings across countries for five of President Trump's proposed policies. The two polices I want to compare are Trump's policies on major trade agreements and the Muslim ban. Do countries have different approval rating for Trump policies that relate to Islam as compared to trade agreements? I hypothesize that countries' approval rate of Trump will be higher for policies that relate to trade rather then polices that relate to the Islam ban. The reasoning for this is that there is a lot of false and negative narratives surrounding Islam that might make more countries react positively towards Trump in this regard. This is in no way to say that radicalism is intertwined with Islam, but that there may be misconceptions about this worldwide that lead to such results. My explanatory variables are the net_approvals for both the trade issue and Muslim ban issue. The observation pattern that would support my hypothesis would be if Trump's approval rating was higher for the trade agreement then for the Muslim ban. My hypothesis would be considered false if the Muslim ban policy has the lowest approval rating. 
 
 ```{r}
-##library(readr)
-##library(tidyverse)
-##TRUMPWORLD_issue_4 <- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-4.csv")
-##View(TRUMPWORLD_issue_4)
+library(readr)
+library(tidyverse)
+TRUMPWORLD_issue_4 <- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-4.csv")
+TRUMPWORLD_issue_5 <- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-5.csv")
+```
 
-##TRUMPWORLD_issue_5 <- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-5.csv")
-##View(TRUMPWORLD_issue_5)
+
+```{r}
+Issue4 <- TRUMPWORLD_issue_4
+Issue5<- TRUMPWORLD_issue_5
+mytable = cbind(Issue4, Issue5)
+mytable
 
 ```
+
+
+
+
+
+
+
+
+
+
+
 
