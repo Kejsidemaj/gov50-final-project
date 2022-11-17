@@ -1523,99 +1523,331 @@ I could look at data collected from prisons to figure out why people get incarce
 I am also interested in looking at data that relates to sex trafficking.</p>
 <h2 id="milestone-2">Milestone #2</h2>
 <p>The data I will be using is “What the World Thinks of Trump” data that looks at the approval ratings across countries for five of President Trump’s proposed policies. The two polices I want to compare are Trump’s policies on major trade agreements and the Muslim ban. Do countries have different approval rating for Trump policies that relate to Islam as compared to trade agreements? I hypothesize that countries’ approval rate of Trump will be higher for policies that relate to trade rather then polices that relate to the Islam ban. The reasoning for this is that there is a lot of false and negative narratives surrounding Islam that might make more countries react positively towards Trump in this regard. This is in no way to say that radicalism is intertwined with Islam, but that there may be misconceptions about this worldwide that lead to such results. My explanatory variables are the net_approvals for both the trade issue and Muslim ban issue. The observation pattern that would support my hypothesis would be if Trump’s approval rating was higher for the trade agreement then for the Muslim ban. My hypothesis would be considered false if the Muslim ban policy has the lowest approval rating.</p>
+<p>##changed from the islam ban to Mexico wall due to the data being similiar!!</p>
+<p>Withdraw U.S. support for major trade agreements (<code>TRUMPWORLD-issue-4.csv</code>)
+Build a wall on the border between the U. S. and Mexico (<code>TRUMPWORLD-issue-2.csv</code>)</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readr.tidyverse.org'>readr</a></span><span class='op'>)</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
 <span><span class='va'>TRUMPWORLD_issue_4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-4.csv"</span><span class='op'>)</span></span>
-<span><span class='va'>TRUMPWORLD_issue_5</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-5.csv"</span><span class='op'>)</span></span></code></pre>
+<span><span class='va'>TRUMPWORLD_issue_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-2.csv"</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>Issue4</span> <span class='op'>&lt;-</span> <span class='va'>TRUMPWORLD_issue_4</span></span>
-<span><span class='va'>Issue5</span><span class='op'>&lt;-</span> <span class='va'>TRUMPWORLD_issue_5</span></span>
-<span><span class='va'>mytable</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>Issue4</span>, <span class='va'>Issue5</span><span class='op'>)</span></span>
-<span><span class='va'>mytable</span></span></code></pre>
+<span><span class='va'>Issue2</span><span class='op'>&lt;-</span> <span class='va'>TRUMPWORLD_issue_2</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>Issue4</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span> <span class='op'>=</span><span class='st'>"Net_Approve_Trade"</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>Issue4</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>=</span><span class='st'>"Countries_Trade"</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>Issue4</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span> <span class='op'>=</span><span class='st'>"Approve_Trade"</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>Issue4</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>=</span><span class='st'>"Dissaprove_Trade"</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>Issue4</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>]</span> <span class='op'>=</span><span class='st'>"Refused_Trade"</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>Issue2</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span> <span class='op'>=</span><span class='st'>"Net_Approve_Mexico"</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>Issue2</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>=</span><span class='st'>"Mexico_Countries"</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>Issue2</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span> <span class='op'>=</span><span class='st'>"Approve_Mexico"</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>Issue2</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>=</span><span class='st'>"Dissaprove_Mexico"</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>Issue2</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>]</span> <span class='op'>=</span><span class='st'>"Refused_Mexico"</span></span>
+<span></span>
+<span><span class='va'>policy_table</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>Issue4</span>, <span class='va'>Issue2</span><span class='op'>)</span></span>
+<span><span class='va'>policy_table</span> <span class='co'>##Ask for help</span></span></code></pre>
 </div>
-<pre><code>          country net_approval Approve Disapprove DK/Refused
-1          Canada          -63      15         78          7
-2          France          -68      15         83          2
-3         Germany          -68      13         81          5
-4          Greece          -54      17         71         13
-5         Hungary          -45      18         63         19
-6           Italy          -48      18         66         17
-7     Netherlands          -78      10         88          3
-8          Poland          -45      14         59         27
-9           Spain          -75      10         85          5
-10         Sweden          -85       5         90          5
-11 United Kingdom          -55      17         72         11
-12         Russia          -21      28         49         23
-13      Australia          -54      19         73          7
-14          India           -4      24         28         48
-15      Indonesia          -11      34         45         21
-16          Japan          -50      16         66         18
-17    Philippines          -50      22         72          7
-18    South Korea          -68      12         80          8
-19        Vietnam          -35      26         61         13
-20         Israel          -34      24         58         18
-21         Jordan          -71      12         83          5
-22        Lebanon          -58      16         74         10
-23        Tunisia          -40      20         60         20
-24         Turkey          -30      20         50         30
-25          Ghana          -52      20         72          8
-26          Kenya          -33      32         65          3
-27        Nigeria          -32      32         64          4
-28        Senegal          -64      14         78          8
-29   South Africa          -15      35         50         15
-30       Tanzania          -33      30         63          7
-31      Argentina          -51      18         69         14
-32         Brazil          -54      17         71         12
-33          Chile          -70      11         81          7
-34       Colombia          -55      19         74          7
-35         Mexico          -66      14         80          6
-36           Peru          -51      21         72          7
-37      Venezuela          -54      19         73          8
-          country net_approval Approve Disapprove DK/Refused
-1          Canada          -63      15         78          7
-2          France          -68      15         83          2
-3         Germany          -68      13         81          5
-4          Greece          -54      17         71         13
-5         Hungary          -45      18         63         19
-6           Italy          -48      18         66         17
-7     Netherlands          -78      10         88          3
-8          Poland          -45      14         59         27
-9           Spain          -75      10         85          5
-10         Sweden          -85       5         90          5
-11 United Kingdom          -55      17         72         11
-12         Russia          -21      28         49         23
-13      Australia          -54      19         73          7
-14          India           -4      24         28         48
-15      Indonesia          -11      34         45         21
-16          Japan          -50      16         66         18
-17    Philippines          -50      22         72          7
-18    South Korea          -68      12         80          8
-19        Vietnam          -35      26         61         13
-20         Israel          -34      24         58         18
-21         Jordan          -71      12         83          5
-22        Lebanon          -58      16         74         10
-23        Tunisia          -40      20         60         20
-24         Turkey          -30      20         50         30
-25          Ghana          -52      20         72          8
-26          Kenya          -33      32         65          3
-27        Nigeria          -32      32         64          4
-28        Senegal          -64      14         78          8
-29   South Africa          -15      35         50         15
-30       Tanzania          -33      30         63          7
-31      Argentina          -51      18         69         14
-32         Brazil          -54      17         71         12
-33          Chile          -70      11         81          7
-34       Colombia          -55      19         74          7
-35         Mexico          -66      14         80          6
-36           Peru          -51      21         72          7
-37      Venezuela          -54      19         73          8</code></pre>
+<pre><code>   Countries_Trade Net_Approve_Trade Approve_Trade Dissaprove_Trade
+1           Canada               -63            15               78
+2           France               -68            15               83
+3          Germany               -68            13               81
+4           Greece               -54            17               71
+5          Hungary               -45            18               63
+6            Italy               -48            18               66
+7      Netherlands               -78            10               88
+8           Poland               -45            14               59
+9            Spain               -75            10               85
+10          Sweden               -85             5               90
+11  United Kingdom               -55            17               72
+12          Russia               -21            28               49
+13       Australia               -54            19               73
+14           India                -4            24               28
+15       Indonesia               -11            34               45
+16           Japan               -50            16               66
+17     Philippines               -50            22               72
+18     South Korea               -68            12               80
+19         Vietnam               -35            26               61
+20          Israel               -34            24               58
+21          Jordan               -71            12               83
+22         Lebanon               -58            16               74
+23         Tunisia               -40            20               60
+24          Turkey               -30            20               50
+25           Ghana               -52            20               72
+26           Kenya               -33            32               65
+27         Nigeria               -32            32               64
+28         Senegal               -64            14               78
+29    South Africa               -15            35               50
+30        Tanzania               -33            30               63
+31       Argentina               -51            18               69
+32          Brazil               -54            17               71
+33           Chile               -70            11               81
+34        Colombia               -55            19               74
+35          Mexico               -66            14               80
+36            Peru               -51            21               72
+37       Venezuela               -54            19               73
+   Refused_Trade Mexico_Countries Net_Approve_Mexico Approve_Mexico
+1              7           Canada                -71             13
+2              2           France                -79             10
+3              5          Germany                -81              8
+4             13           Greece                -60             18
+5             19          Hungary                -14             35
+6             17            Italy                -56             17
+7              3      Netherlands                -79              9
+8             27           Poland                -45             18
+9              5            Spain                -85              7
+10             5           Sweden                -89              5
+11            11   United Kingdom                -71             12
+12            23           Russia                -12             35
+13             7        Australia                -59             19
+14            48            India                 -4             25
+15            21        Indonesia                -38             19
+16            18            Japan                -63             15
+17             7      Philippines                -33             28
+18             8      South Korea                -71             12
+19            13          Vietnam                -14             35
+20            18           Israel                 -2             42
+21             5           Jordan                 -2             44
+22            10          Lebanon                -52             14
+23            20          Tunisia                -40             20
+24            30           Turkey                -51             12
+25             8            Ghana                -35             29
+26             3            Kenya                -28             33
+27             4          Nigeria                -12             38
+28             8          Senegal                -65             12
+29            15     South Africa                -23             32
+30             7         Tanzania                -30             31
+31            14        Argentina                -72             11
+32            12           Brazil                -61             15
+33             7            Chile                -76             10
+34             7         Colombia                -81              8
+35             6           Mexico                -89              5
+36             7             Peru                -62             16
+37             8        Venezuela                -65             14
+   Dissaprove_Mexico Refused_Mexico
+1                 84              3
+2                 89              1
+3                 89              3
+4                 78              5
+5                 49             16
+6                 73             10
+7                 88              2
+8                 63             19
+9                 92              1
+10                94              1
+11                83              4
+12                47             17
+13                78              3
+14                29             47
+15                57             23
+16                78              7
+17                61             12
+18                83              6
+19                49             17
+20                44             13
+21                46             10
+22                66             20
+23                60             21
+24                63             24
+25                64              6
+26                61              6
+27                50             12
+28                77             10
+29                55             13
+30                61              8
+31                83              6
+32                76              9
+33                86              5
+34                89              2
+35                94              2
+36                78              7
+37                79              7</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>##policy_table = c(Issue4,Issue5)</span></span>
+<span><span class='co'>##policy_table</span></span>
+<span></span>
+<span><span class='co'>#frame(policy_table)</span></span>
+<span></span>
+<span><span class='va'>policy_table</span> <span class='op'>&lt;-</span> <span class='va'>policy_table</span> <span class='op'>|&gt;</span></span>
+<span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Net_Approve_Trade</span>, <span class='va'>Countries_Trade</span>, <span class='va'>Net_Approve_Mexico</span>, <span class='va'>Mexico_Countries</span><span class='op'>)</span></span>
+<span><span class='va'>policy_table</span></span></code></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<pre><code>   Net_Approve_Trade Countries_Trade Net_Approve_Mexico
+1                -63          Canada                -71
+2                -68          France                -79
+3                -68         Germany                -81
+4                -54          Greece                -60
+5                -45         Hungary                -14
+6                -48           Italy                -56
+7                -78     Netherlands                -79
+8                -45          Poland                -45
+9                -75           Spain                -85
+10               -85          Sweden                -89
+11               -55  United Kingdom                -71
+12               -21          Russia                -12
+13               -54       Australia                -59
+14                -4           India                 -4
+15               -11       Indonesia                -38
+16               -50           Japan                -63
+17               -50     Philippines                -33
+18               -68     South Korea                -71
+19               -35         Vietnam                -14
+20               -34          Israel                 -2
+21               -71          Jordan                 -2
+22               -58         Lebanon                -52
+23               -40         Tunisia                -40
+24               -30          Turkey                -51
+25               -52           Ghana                -35
+26               -33           Kenya                -28
+27               -32         Nigeria                -12
+28               -64         Senegal                -65
+29               -15    South Africa                -23
+30               -33        Tanzania                -30
+31               -51       Argentina                -72
+32               -54          Brazil                -61
+33               -70           Chile                -76
+34               -55        Colombia                -81
+35               -66          Mexico                -89
+36               -51            Peru                -62
+37               -54       Venezuela                -65
+   Mexico_Countries
+1            Canada
+2            France
+3           Germany
+4            Greece
+5           Hungary
+6             Italy
+7       Netherlands
+8            Poland
+9             Spain
+10           Sweden
+11   United Kingdom
+12           Russia
+13        Australia
+14            India
+15        Indonesia
+16            Japan
+17      Philippines
+18      South Korea
+19          Vietnam
+20           Israel
+21           Jordan
+22          Lebanon
+23          Tunisia
+24           Turkey
+25            Ghana
+26            Kenya
+27          Nigeria
+28          Senegal
+29     South Africa
+30         Tanzania
+31        Argentina
+32           Brazil
+33            Chile
+34         Colombia
+35           Mexico
+36             Peru
+37        Venezuela</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>policy_table</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>approved_mexico <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>Net_Approve_Mexico</span><span class='op'>)</span>,</span>
+<span>            approved_trade <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>Net_Approve_Trade</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>  approved_mexico approved_trade
+1       -50.54054      -49.72973</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>policy_table</span></span></code></pre>
+</div>
+<pre><code>   Net_Approve_Trade Countries_Trade Net_Approve_Mexico
+1                -63          Canada                -71
+2                -68          France                -79
+3                -68         Germany                -81
+4                -54          Greece                -60
+5                -45         Hungary                -14
+6                -48           Italy                -56
+7                -78     Netherlands                -79
+8                -45          Poland                -45
+9                -75           Spain                -85
+10               -85          Sweden                -89
+11               -55  United Kingdom                -71
+12               -21          Russia                -12
+13               -54       Australia                -59
+14                -4           India                 -4
+15               -11       Indonesia                -38
+16               -50           Japan                -63
+17               -50     Philippines                -33
+18               -68     South Korea                -71
+19               -35         Vietnam                -14
+20               -34          Israel                 -2
+21               -71          Jordan                 -2
+22               -58         Lebanon                -52
+23               -40         Tunisia                -40
+24               -30          Turkey                -51
+25               -52           Ghana                -35
+26               -33           Kenya                -28
+27               -32         Nigeria                -12
+28               -64         Senegal                -65
+29               -15    South Africa                -23
+30               -33        Tanzania                -30
+31               -51       Argentina                -72
+32               -54          Brazil                -61
+33               -70           Chile                -76
+34               -55        Colombia                -81
+35               -66          Mexico                -89
+36               -51            Peru                -62
+37               -54       Venezuela                -65
+   Mexico_Countries
+1            Canada
+2            France
+3           Germany
+4            Greece
+5           Hungary
+6             Italy
+7       Netherlands
+8            Poland
+9             Spain
+10           Sweden
+11   United Kingdom
+12           Russia
+13        Australia
+14            India
+15        Indonesia
+16            Japan
+17      Philippines
+18      South Korea
+19          Vietnam
+20           Israel
+21           Jordan
+22          Lebanon
+23          Tunisia
+24           Turkey
+25            Ghana
+26            Kenya
+27          Nigeria
+28          Senegal
+29     South Africa
+30         Tanzania
+31        Argentina
+32           Brazil
+33            Chile
+34         Colombia
+35           Mexico
+36             Peru
+37        Venezuela</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>##graph the two means</span></span></code></pre>
+</div>
+</div>
+<p>After analyzing the approval rates for building a wall on the Mexican border versus trade agreements, there was not a major difference between countries’ approval rate of the U.S. The reason for this might be that the Mexican border issue does not impact how other countries see the U.S or their opinion on the matter. However, I will continue my analysis by comparing the Islam ban v.s climate policy.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
