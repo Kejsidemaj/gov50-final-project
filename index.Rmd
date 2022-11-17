@@ -19,23 +19,62 @@ I am also interested in looking at data that relates to sex trafficking.
 
 The data I will be using is "What the World Thinks of Trump" data that looks at the approval ratings across countries for five of President Trump's proposed policies. The two polices I want to compare are Trump's policies on major trade agreements and the Muslim ban. Do countries have different approval rating for Trump policies that relate to Islam as compared to trade agreements? I hypothesize that countries' approval rate of Trump will be higher for policies that relate to trade rather then polices that relate to the Islam ban. The reasoning for this is that there is a lot of false and negative narratives surrounding Islam that might make more countries react positively towards Trump in this regard. This is in no way to say that radicalism is intertwined with Islam, but that there may be misconceptions about this worldwide that lead to such results. My explanatory variables are the net_approvals for both the trade issue and Muslim ban issue. The observation pattern that would support my hypothesis would be if Trump's approval rating was higher for the trade agreement then for the Muslim ban. My hypothesis would be considered false if the Muslim ban policy has the lowest approval rating. 
 
+##changed from the islam ban to Mexico wall due to the data being similiar!!
+
+
+Withdraw U.S. support for major trade agreements (`TRUMPWORLD-issue-4.csv`)
+Build a wall on the border between the U. S. and Mexico (`TRUMPWORLD-issue-2.csv`)
+
 ```{r}
 library(readr)
 library(tidyverse)
+library(dplyr)
 TRUMPWORLD_issue_4 <- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-4.csv")
-TRUMPWORLD_issue_5 <- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-5.csv")
+TRUMPWORLD_issue_2 <- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-2.csv")
 ```
 
 
 ```{r}
 Issue4 <- TRUMPWORLD_issue_4
-Issue5<- TRUMPWORLD_issue_5
-mytable = cbind(Issue4, Issue5)
-mytable
+Issue2<- TRUMPWORLD_issue_2
+
+colnames(Issue4)[2] ="Net_Approve_Trade"
+colnames(Issue4)[1] ="Countries_Trade"
+colnames(Issue4)[3] ="Approve_Trade"
+colnames(Issue4)[4] ="Dissaprove_Trade"
+colnames(Issue4)[5] ="Refused_Trade"
+colnames(Issue2)[2] ="Net_Approve_Mexico"
+colnames(Issue2)[1] ="Mexico_Countries"
+colnames(Issue2)[3] ="Approve_Mexico"
+colnames(Issue2)[4] ="Dissaprove_Mexico"
+colnames(Issue2)[5] ="Refused_Mexico"
+
+policy_table = cbind(Issue4, Issue2)
+policy_table ##Ask for help
+
+##policy_table = c(Issue4,Issue5)
+##policy_table
+
+#frame(policy_table)
+
+policy_table <- policy_table |>
+select(Net_Approve_Trade, Countries_Trade, Net_Approve_Mexico, Mexico_Countries)
+policy_table
 
 ```
 
 
+```{r}
+policy_table |>
+  summarise(approved_mexico = mean(Net_Approve_Mexico),
+            approved_trade = mean(Net_Approve_Trade))
+policy_table
+
+##graph the two means
+```
+
+
+After analyzing the approval rates for building a wall on the Mexican border versus trade agreements, there was not a major difference between countries' approval rate of the U.S. The reason for this might be that the Mexican border issue does not impact how other countries see the U.S or their opinion on the matter. However, I will continue my analysis by comparing the Islam ban v.s climate policy.
 
 
 
