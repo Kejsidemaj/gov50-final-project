@@ -7,81 +7,148 @@ output:
     self_contained: false
 ---
 
+```{r}
+https://dataverse.harvard.edu/api/access/datafile/4949558
+
+```
+
+-download data here + clean 
+support / opposition of abortion after 20 weeks and the education level, race, party 
+outcome = suport/ opposition
+explanatory = education level
 
 
-## Project thoughts
-
-I am interested in exploring data related to mass incarceration in the United States. 
-I could look at data collected from prisons to figure out why people get incarcerated or who gets incarcerated.
-I am also interested in looking at data that relates to sex trafficking.
-
-## Milestone #2 
-
-The data I will be using is "What the World Thinks of Trump" data that looks at the approval ratings across countries for five of President Trump's proposed policies. The two polices I want to compare are Trump's policies on major trade agreements and the Muslim ban. Do countries have different approval rating for Trump policies that relate to Islam as compared to trade agreements? I hypothesize that countries' approval rate of Trump will be higher for policies that relate to trade rather then polices that relate to the Islam ban. The reasoning for this is that there is a lot of false and negative narratives surrounding Islam that might make more countries react positively towards Trump in this regard. This is in no way to say that radicalism is intertwined with Islam, but that there may be misconceptions about this worldwide that lead to such results. My explanatory variables are the net_approvals for both the trade issue and Muslim ban issue. The observation pattern that would support my hypothesis would be if Trump's approval rating was higher for the trade agreement then for the Muslim ban. My hypothesis would be considered false if the Muslim ban policy has the lowest approval rating. 
-
-##changed from the islam ban to Mexico wall due to the data being similiar!!
 
 
-Withdraw U.S. support for major trade agreements (`TRUMPWORLD-issue-4.csv`)
-Build a wall on the border between the U. S. and Mexico (`TRUMPWORLD-issue-2.csv`)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1) an introduction where you introduce the research question and hypothesis and briefly describe why it is interesting
+
+The research question explored in this project comes from the "What the World Thinks of Trump" data that looks at the approval ratings across countries for five of President Trump's proposed policies. The two polices I want to compare are Trump's policy on withdrawing support for international climate change agreements and Trump's policy that would introduce tighter restrictions on those entering the U.S. from majority-Muslim countries. My research question asks: Does Trump receive more disapproval from fellow countries on issues relating to environmental policies as compared to issues surrounding ideas of religion such as the Muslim ban policy? 
+
+I hypothesize that countries' approval rate of Trump will be lower for policies that relate to the environment rather then policies that relate to the Muslim ban. The reasoning for this is that there is a lot of false and negative narratives surrounding Islam and ideals of radicalism that might make more countries react less negatively towards Trump in this regard. This is in no way to say that radicalism is intertwined with Islam, but that there may be misconceptions about this worldwide that lead to such results. My hypothesis would be considered false if the Muslim ban policy has a lower or the same approval rating as the climate change policy. As of recently, more and more developed countries are taking environmental policies more seriously which might make them more likely to react more negativity towards Trump's policy that aimed to withdraw support for international climate change agreements. The disapproval that may result from this type of policy will allow for an interesting comparison with the Muslim ban policy. As a society, we have come far when it comes to eliminating bigotry and discriminatory ideals about different races, sexes, and religion. But still, some of these ideals may persist and be held by people in some of the most powerful countries in the world. It will be interested to explore this conundrum in this project. 
+
+
+2) a data section that briefly describes the data source, describes how the key dependent and independent variables are measured (e.g., a survey, statistical model, or expert coding), and also produces a plot that summarizes the dependent variable; + is it cross sectional study 
+
+The data source is titled "What the World Thinks of Trump." This data on global public opinion toward Trump comes from the Pew Research Center’s Global Attitudes & Trends annual survey. Since 2000, Pew typically has asked approximately 1,000 residents each in a variety of countries for their views on the U.S., the U.S. president, other world leaders and several issues. This data's key dependent and independent variables are measured through surveys and this is considered a cross sectional study. 
+
+##discuss where data is from, 
+what varibales are being used/ what do they represent --explanatory variable, outcome varibale (what is the mean or range of it)
+should have a distribution plot of the outcome variable !!!!
+
+OUTCOME V.S EXPLANTORY VARIABLE -- distribution plot(?)
+ 
+outome of perspective onislam v.s ___ ?
+-agreated cizeten level of support for trump: 5 diff verison of people support for trump 
+-country level polity score -- do countries' elvel democracy does that realte to them supporting trump polciy? 
+
+
+group by devloped v.s developing countries for outcomes
+
+
 
 ```{r}
 library(readr)
 library(tidyverse)
-library(dplyr)
-TRUMPWORLD_issue_4 <- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-4.csv")
-TRUMPWORLD_issue_2 <- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-2.csv")
+TRUMPWORLD_issue_5 <- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-5.csv")
+TRUMPWORLD_issue_1 <- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-1.csv")
 ```
 
-
 ```{r}
-Issue4 <- TRUMPWORLD_issue_4
-Issue2<- TRUMPWORLD_issue_2
+Issue5 <- TRUMPWORLD_issue_5
+Issue1<- TRUMPWORLD_issue_1
 
-colnames(Issue4)[2] ="Net_Approve_Trade"
-colnames(Issue4)[1] ="Countries_Trade"
-colnames(Issue4)[3] ="Approve_Trade"
-colnames(Issue4)[4] ="Dissaprove_Trade"
-colnames(Issue4)[5] ="Refused_Trade"
-colnames(Issue2)[2] ="Net_Approve_Mexico"
-colnames(Issue2)[1] ="Mexico_Countries"
-colnames(Issue2)[3] ="Approve_Mexico"
-colnames(Issue2)[4] ="Dissaprove_Mexico"
-colnames(Issue2)[5] ="Refused_Mexico"
+colnames(Issue5)[2] ="Net_Approve_Islam"
+colnames(Issue5)[1] ="Countries"
+colnames(Issue5)[3] ="Approve_Islam"
+colnames(Issue5)[4] ="Dissaprove_Islam"
+colnames(Issue5)[5] ="Refused_Islam"
+colnames(Issue1)[2] ="Net_Approve_Climate"
+colnames(Issue1)[1] ="Climate_Countries"
+colnames(Issue1)[3] ="Approve_Climate"
+colnames(Issue1)[4] ="Dissaprove_Climate"
+colnames(Issue1)[5] ="RefusedClimate"
 
-policy_table = cbind(Issue4, Issue2)
-policy_table ##Ask for help
-
-##policy_table = c(Issue4,Issue5)
-##policy_table
-
-#frame(policy_table)
-
-policy_table <- policy_table |>
-select(Net_Approve_Trade, Countries_Trade, Net_Approve_Mexico, Mexico_Countries)
+policy_table = cbind(Issue5, Issue1) 
 policy_table
 
-```
+policy_table <- policy_table|>
+  select(Countries, Net_Approve_Islam, Net_Approve_Climate)
+policy_table
 
-
-```{r}
 policy_table |>
-  summarise(approved_mexico = mean(Net_Approve_Mexico),
-            approved_trade = mean(Net_Approve_Trade))
-policy_table
+  ggplot(aes(x = Net_Approve_Islam)) +  ##Net_Approve_Islam/ Net_Approve_Climate)  +
+  ##mutate(Islam_Approve = Net_Approve_Islam / Net_Approve_Climate)
+  geom_histogr()
 
-##graph the two means
+##remove some non-devloped countries!
 ```
 
+3) A results section, including a presentation of your regression results (either a plot or a table), a separate plot of the main relationship of interest (e.g. a scatterplot of the outcome and the main independent variable), and as well as a summary and discussion of results in substantive context (a paragraph or two). 
 
-After analyzing the approval rates for building a wall on the Mexican border versus trade agreements, there was not a major difference between countries' approval rate of the U.S. The reason for this might be that the Mexican border issue does not impact how other countries see the U.S or their opinion on the matter. However, I will continue my analysis by comparing the Islam ban v.s climate policy.
-
-
-
-
+-You should include at least one multiple regression (i.e. regression with multiple explanatory/independent variables) in your analysis, but note that you're not graded on the results themselves (like whether you see any statistical significance).
+-You should also interpret (in plain English) the main coefficient of interest in your regression, comment on the statistical significance of the estimated coefficient, and  say whether or not you believe the coefficient to represent a causal effect.
 
 
 
 
 
+```{r}
+policy_table <- policy_table |>
+  summarise(approved_islam = mean(Net_Approve_Islam),
+            approved_climate = mean(Net_Approve_Climate))
+policy_table
 
+policy_table |>
+  knitr::kable() 
+
+policy_plot <- policy_table |>
+  ggplot(mapping = aes(x = ) +
+  geom_histogram()
+policy_plot
+
+
+#hist(policy_table$approved_islam, right = FALSE, col = "firebrick", las = 1)
+
+#PSet 2 Q 3 
+#policy_plot
+
+##geom_bar / geom_col
+##geom_histrogram
+#policy_plot <- policy_table |>
+ # ggplot(mapping = aes(x = approved_islam)) +
+#  geom_histogram()
+
+#policy_plot
+
+```
+
+##you should interpret (in plain English) the main coefficient of interest in your regression. You should also comment on the statistical significance of the estimated coefficient and whether or not you believe the coefficient to represent a causal effect.
+
+The main coefficients of interest are the means of net approval for both the climate and islam policy. There a significant statistical significance because __. There is/not a causal effect because __. 
+
+
+-- 
+
+4) a brief (one paragraph) concluding section that summarizes your results, assesses the extent to which you find support for your hypothesis, describes limitations of your analysis and threats to inference, and states how your analysis could be improved (e.g., improved data that would be useful to collect).
+
+-need to offer if it is statistically significant, discussion of causality/ any confounders 
+-
+
+The net approval for islam versus the climate is -49.72973 to -51.27027
+
+approved_islam	approved_climate
+-49.72973	-51.27027
