@@ -1,154 +1,163 @@
 ---
 title: "Gov 50 Final Project"
 author: "Kejsi Demaj"
-description: "My final project"
+description: "Relationship Between Abortion and Level of Education"
 output:
   distill::distill_article:
     self_contained: false
 ---
-
-```{r}
-https://dataverse.harvard.edu/api/access/datafile/4949558
-
-```
-
--download data here + clean 
-support / opposition of abortion after 20 weeks and the education level, race, party 
-outcome = suport/ opposition
-explanatory = education level
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1) an introduction where you introduce the research question and hypothesis and briefly describe why it is interesting
-
-The research question explored in this project comes from the "What the World Thinks of Trump" data that looks at the approval ratings across countries for five of President Trump's proposed policies. The two polices I want to compare are Trump's policy on withdrawing support for international climate change agreements and Trump's policy that would introduce tighter restrictions on those entering the U.S. from majority-Muslim countries. My research question asks: Does Trump receive more disapproval from fellow countries on issues relating to environmental policies as compared to issues surrounding ideas of religion such as the Muslim ban policy? 
-
-I hypothesize that countries' approval rate of Trump will be lower for policies that relate to the environment rather then policies that relate to the Muslim ban. The reasoning for this is that there is a lot of false and negative narratives surrounding Islam and ideals of radicalism that might make more countries react less negatively towards Trump in this regard. This is in no way to say that radicalism is intertwined with Islam, but that there may be misconceptions about this worldwide that lead to such results. My hypothesis would be considered false if the Muslim ban policy has a lower or the same approval rating as the climate change policy. As of recently, more and more developed countries are taking environmental policies more seriously which might make them more likely to react more negativity towards Trump's policy that aimed to withdraw support for international climate change agreements. The disapproval that may result from this type of policy will allow for an interesting comparison with the Muslim ban policy. As a society, we have come far when it comes to eliminating bigotry and discriminatory ideals about different races, sexes, and religion. But still, some of these ideals may persist and be held by people in some of the most powerful countries in the world. It will be interested to explore this conundrum in this project. 
-
-
-2) a data section that briefly describes the data source, describes how the key dependent and independent variables are measured (e.g., a survey, statistical model, or expert coding), and also produces a plot that summarizes the dependent variable; + is it cross sectional study 
-
-The data source is titled "What the World Thinks of Trump." This data on global public opinion toward Trump comes from the Pew Research Center’s Global Attitudes & Trends annual survey. Since 2000, Pew typically has asked approximately 1,000 residents each in a variety of countries for their views on the U.S., the U.S. president, other world leaders and several issues. This data's key dependent and independent variables are measured through surveys and this is considered a cross sectional study. 
-
-##discuss where data is from, 
-what varibales are being used/ what do they represent --explanatory variable, outcome varibale (what is the mean or range of it)
-should have a distribution plot of the outcome variable !!!!
-
-OUTCOME V.S EXPLANTORY VARIABLE -- distribution plot(?)
  
-outome of perspective onislam v.s ___ ?
--agreated cizeten level of support for trump: 5 diff verison of people support for trump 
--country level polity score -- do countries' elvel democracy does that realte to them supporting trump polciy? 
+##INTRODUCTION: 
 
+This project explores how the level of education someone has explains or relates to their opinion on whether a woman should be able to obtain an abortion as a matter of choice. Specifically, my project asks whether having a lower educational attainment level influences how citizens look at abortion rights. I hypothesize that having a higher educational attainment would make it more likely to support abortion. 
 
-group by devloped v.s developing countries for outcomes
-
-
+##DATA RESEARCH AND DESIGN: 
 
 ```{r}
-library(readr)
 library(tidyverse)
-TRUMPWORLD_issue_5 <- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-5.csv")
-TRUMPWORLD_issue_1 <- read_csv("~/Desktop/Gov 50 PSET/trump-world-trust/TRUMPWORLD-issue-1.csv")
+
+ces <- read.csv("CES20_Common_OUTPUT_vv.csv") |> 
+  select(c(gender, educ, race, CC20_332a, CC20_340a, pew_religimp)) |>
+  mutate(CC20_332a = 
+           case_when(
+             CC20_332a == 1 ~ 1,
+             CC20_332a == 2 ~ 0),
+         abortion = if_else(CC20_332a == 1, "Pro-Abortion", "Anti-Abortion"),
+         white = if_else(race == 1, "White", "Non-White"),
+         liberal = case_when(CC20_340a >= 3 ~ "Liberal",
+                             CC20_340a <= 4 ~ "Non-Liberal"),
+         religious = case_when(pew_religimp <= 2 ~ "Religious",
+                               pew_religimp >= 3 ~ "Non-Religious"),
+         educ_label = case_when(educ == 1 ~ "Some HS",
+                                educ == 2 ~ "HS degree",
+                                educ == 3 ~ "Some College",
+                                educ == 4 ~ "2-year",
+                                educ == 5 ~ "4-year",
+                                educ == 6 ~ "Post-grad"))
 ```
+To investigate this relationship, I am relying on data from the 2020 Cooperative Election Study (CES) data policy preferences. The analyses cover abortion preference, educational attainment, party affiliation, race, and religious importance for 61,000 different individuals from 2020. The research design is cross-sectional study and makes no causal assumptions or claims. 
+
+Source: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi%3A10.7910/DVN/E9N6PH
+
+The CES data provides us with the outcome variable: abortion which is support/ opposition for abortion. The outcome ranges from 0 to 1 where 1 means support for abortion and 0 means opposition. The mean is .6 and median is 1. 
 
 ```{r}
-Issue5 <- TRUMPWORLD_issue_5
-Issue1<- TRUMPWORLD_issue_1
-
-colnames(Issue5)[2] ="Net_Approve_Islam"
-colnames(Issue5)[1] ="Countries"
-colnames(Issue5)[3] ="Approve_Islam"
-colnames(Issue5)[4] ="Dissaprove_Islam"
-colnames(Issue5)[5] ="Refused_Islam"
-colnames(Issue1)[2] ="Net_Approve_Climate"
-colnames(Issue1)[1] ="Climate_Countries"
-colnames(Issue1)[3] ="Approve_Climate"
-colnames(Issue1)[4] ="Dissaprove_Climate"
-colnames(Issue1)[5] ="RefusedClimate"
-
-policy_table = cbind(Issue5, Issue1) 
-policy_table
-
-policy_table <- policy_table|>
-  select(Countries, Net_Approve_Islam, Net_Approve_Climate)
-policy_table
-
-policy_table |>
-  ggplot(aes(x = Net_Approve_Islam)) +  ##Net_Approve_Islam/ Net_Approve_Climate)  +
-  ##mutate(Islam_Approve = Net_Approve_Islam / Net_Approve_Climate)
-  geom_histogr()
-
-##remove some non-devloped countries!
+ab_dist <- ces |>
+  ggplot() +
+  geom_bar(
+    aes(x = abortion,
+        y = ..count../sum(..count..)),
+    fill = "grey20", col = "white") +
+  labs(
+    title = "Distribution of Abortion Preferences",
+    x = "Abortion Preferences",
+    y = "Proportion",
+    caption = "Source: CES")
+ab_dist
 ```
 
-3) A results section, including a presentation of your regression results (either a plot or a table), a separate plot of the main relationship of interest (e.g. a scatterplot of the outcome and the main independent variable), and as well as a summary and discussion of results in substantive context (a paragraph or two). 
-
--You should include at least one multiple regression (i.e. regression with multiple explanatory/independent variables) in your analysis, but note that you're not graded on the results themselves (like whether you see any statistical significance).
--You should also interpret (in plain English) the main coefficient of interest in your regression, comment on the statistical significance of the estimated coefficient, and  say whether or not you believe the coefficient to represent a causal effect.
-
-
-
-
+The CES data also provides the explanatory variable: the education level of the survey respondents. The outcome ranges from 1 to 6, with each outcome being assigned to an educational level from some high school all the way to post-grad degree. The median is 3 and a mean is 3.6. 
 
 ```{r}
-policy_table <- policy_table |>
-  summarise(approved_islam = mean(Net_Approve_Islam),
-            approved_climate = mean(Net_Approve_Climate))
-policy_table
+educ_dist <- ces |>
+  ggplot() +
+  geom_bar(
+    aes(x = fct_reorder(
+      .x = educ,
+      .f = educ_label),
+        y = ..count../sum(..count..)),
+    fill = "grey20", col = "white", binwidth = 0.25) + 
+  labs(
+    title = "Distribution of Education Level",
+    x = "Education Level",
+    y = "Proportion",
+    caption = "Source: CES")
+educ_dist
+```
+##RESULTS:
 
-policy_table |>
-  knitr::kable() 
+#Bivariate relationship 
 
-policy_plot <- policy_table |>
-  ggplot(mapping = aes(x = ) +
-  geom_histogram()
-policy_plot
+Before regressing the abortion outcome on educational level, the bivariate relationship between these variables can be visualized with the plot below. The graph determines for each education level on the x axis, what proportion of people would support the abortion item on the y-axis.  
 
+The bivariate plot suggests that the proportion of people who support abortions tends upwards as the education level increases. In other words, those with a higher level of education tend to disproportionately favor abortion as a choice for women. Regression analyses will offer more detailed information about this seemingly association.
 
-#hist(policy_table$approved_islam, right = FALSE, col = "firebrick", las = 1)
+```{r}
+ces |>
+  group_by(educ, educ_label) |>
+  summarize(CC20_332a = mean(CC20_332a, na.rm = TRUE)) |>
+  ggplot(mapping = aes(
+    x = fct_reorder(
+      .x = educ,
+      .f = educ_label),
+    y = CC20_332a)) +
+  geom_col() +
+  labs(
+    title = "Support for Abortion Based on Educational Level",
+    x = "Education level",
+    y = "Abortion")
+```
+#Regression
 
-#PSet 2 Q 3 
-#policy_plot
+The regression demonstrates the support for abortion on education level and tries to correct for other variables such as race, region, and political affiliation. In the model, the association between education and the abortion preferences is statistically significant at the test level α=0.05. 
 
-##geom_bar / geom_col
-##geom_histrogram
-#policy_plot <- policy_table |>
- # ggplot(mapping = aes(x = approved_islam)) +
-#  geom_histogram()
+```{r}
+library(broom) 
 
-#policy_plot
+edu_abortion <- lm(CC20_332a ~ as.factor(educ) + white + liberal + religious, data = ces)
 
+var_labels <- c(
+  "as.factor(educ)2" = "HS Grad",
+  "as.factor(educ)3" = "Some College",
+  "as.factor(educ)4" = "2-year degree",
+  "as.factor(educ)5" = "4-year degree",
+  "as.factor(educ)6" = "Post-grad degree",
+"whiteWhite" = "White Population",
+"liberalNon-Liberal" = "Liberal",
+"religiousReligious	" = "Religious"
+)
+
+modelsummary::modelsummary(edu_abortion,
+                           statistic = c("s.e. = {std.error}",
+                                         "p = {p.value}"),
+                           coef_map = var_labels,
+                           gof_map = c("nobs", "r.squared", "adj.r.squared"))
+
+knitr::kable(summary(edu_abortion)$coefficients, digits = 2) 
 ```
 
-##you should interpret (in plain English) the main coefficient of interest in your regression. You should also comment on the statistical significance of the estimated coefficient and whether or not you believe the coefficient to represent a causal effect.
+Holding all other co-variants constant, it appears that having a high school degree is associated with a 5% increase in support for abortion as compared to people with the lowest education level (some high school). Some college is constant with a 6% increase in support for abortion as compared to people with some high school. A 2-year degree is constant with a 6% increase in support for abortion as supposed to people with some high school. A 4-year degree leads to 7% increase in support for abortion as compared to the group with the lowest education level. A post-grad degree leads to a 8% increase in support for abortion as compared to the group with the lowest education level. The higher correlations associated with support for abortion trend upwards with higher education levels. 
 
-The main coefficients of interest are the means of net approval for both the climate and islam policy. There a significant statistical significance because __. There is/not a causal effect because __. 
+Holding education, political affiliation, and religion constant, it appears that race (being white) is associated with a 11 decrease in support for abortion as compared to being Non-white. Holding education, race and religion constant, it appears that being liberal is associated with a 32% increase in support for abortion as compared to being non-liberal. Holding all other co-variants constant, being religious is associated with a 26% decrease in support for abortion as opposed to those who are not religious.
 
+#Statistical significance
 
--- 
+In the multivariate model, the association between educational levels and the abortion support is statistically significant at the test level α=0.05. Specifically, the p-value on the coefficient in is 0. If hypothesizing that the association between education and abortion opinions was was non-zero, then the coefficient’s p-value of 0 would suggest there is a near 0% probability that the estimated association observed here is as extreme as any estimated association from the null distribution.
 
-4) a brief (one paragraph) concluding section that summarizes your results, assesses the extent to which you find support for your hypothesis, describes limitations of your analysis and threats to inference, and states how your analysis could be improved (e.g., improved data that would be useful to collect).
+The standard error for the education coefficients approximates how much variation we should expect to see in our estimated coeﬀicient across repeated samples. Assuming the sampling distribution of abortion support is approximately normal, the standard error on the coefficient estimates for education level can be used to construct a probabilistic 95% confidence interval. Because 1.96 represents the z-score that captures 95% of the data underneath a standard normal distribution, that value can be multiplied by the coefficient standard error, and this product subtracted and added to the coefficient point estimate, to produce lower and upper bound limits of the 95% confidence interval. Below are some examples of the CI for high school graduates and post-graduates: 
 
--need to offer if it is statistically significant, discussion of causality/ any confounders 
--
+#CI for HS graduates:
+(`r .05 - .0196`, `r .05 + .0196`)
 
-The net approval for islam versus the climate is -49.72973 to -51.27027
+Our 95% confidence interval for the HS degree coefficient is between the bounds above meaning that across repeated samples this interval would capture the true population parameter for this coefficient in 95% of repeated samples. 
 
-approved_islam	approved_climate
--49.72973	-51.27027
+#CI for the highest education level (Post-Grad Degree): 
+(`r .08 - .0196`, `r .08 + .0196`)
+
+Our 95% confidence interval for the Post-grad degree coefficient is between 0.0604 and 0.0996 meaning that across repeated samples this interval would capture the true population parameter for this coefficient in 95% of repeated samples. 
+
+#Causality and confounders:
+
+Because the explanatory variable of education is not randomly assigned, it cannot be treated as a “treatment” variable. Thus, education levels cannot be said to causally increase support for abortion; rather, the two phenomenon are positively associated with each other, with this estimated association being statistically significant.
+
+My multivariate model attempts to control for a possible confounder: someone's party affiliation and more specifically, if they identify as liberal or not. Whether or not someone is liberal could influence the outcome variable for preferences towards abortion as in the U.S as being more politically liberal is associated with being pro-choice and having empathy towards abortion. The explanatory variable could also effected by this covariate as someone who has a liberal affiliation may be more likely to have a higher level of education as compared to their non-liberal counterparts. 
+
+My multivariate model also attempts to control for variables that relate to and can potentially influence the outcome. My multivariate model attempts to control for whether someone is religious or not. The overall presence of religion, captured by the covariate on religious importance could influence preferences towards the outcome variable of abortion if a greater presence produces more less empathy and more restrictive opinions. 
+
+##CONCLUSION: 
+
+There is a significant non 0 effect on abortion preferences based on educational level. The regression determined that the support for abortion are are positively and significantly associated with increases in educational levels. A multivariate model that controlled for possible influential covariates and confounders produced an estimate of this association while also introducing other variables like being liberal or having strong religious affiliations that had a significant effect on support for abortion. The regression determined a significant positive associated with being liberal and supporting abortion as compared to non-liberal counterparts The regression also determined that those with strong religious preferences has a significant negative association with supporting abortion. Overall, the hypothesis of having a higher educational attainment would make it more likely to support abortion was observed to be correct. 
+
+Our analyses is limited by the fact those sampled can have multiple opinions on abortions when it comes to differing circumstances that are not reflected in this data set. Someone could support abortion during the first 10 weeks and in cases of incest or rape, but would not support abortion otherwise. The outcome variable, while effective, could be limited in its ability to fully demonstrate people's complex and sometimes opposing beliefs on the same topic.
+
+For the future, it would be interesting to improve the project by seeing how other explanatory variables can influence the outcome on top of the explanatory variables we explored. For example, how does being a woman or specifically a religious, educated, woman influence abortion outcomes versus being a liberal, non-educated man? Expanding on the explanatory variables would be interesting in providing more significant analysis of this critical political topic.
